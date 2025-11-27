@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Houtvie Hub - Packages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0B0B0D;
+            color: #F4F5F7;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.5s ease;
+        }
+
+        nav.scrolled {
+            background-color: rgba(11, 11, 13, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(203, 178, 122, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 2.5rem;
+            opacity: 0.95;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(244, 245, 247, 0.7);
+            font-size: 0.875rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #CBB27A;
+        }
+
+        .nav-links .btn-contact {
+            padding: 0.5rem 1.5rem;
+            background-color: #CBB27A;
+            color: #0B0B0D;
+            font-weight: 500;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: rgba(244, 245, 247, 0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 10rem 1.5rem 5rem;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #CBB27A;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(244, 245, 247, 0.6);
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        /* Packages */
+        .packages {
+            padding: 5rem 1.5rem;
+            background-color: rgba(15, 26, 46, 0.3);
+        }
+
+        .packages-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .package-card {
+            padding: 2.5rem;
+            background-color: rgba(11, 11, 13, 0.6);
+            border: 1px solid rgba(203, 178, 122, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(203, 178, 122, 0.4);
+        }
+
+        .package-card.featured {
+            border-color: #CBB27A;
+            transform: scale(1.05);
+        }
+
+        .package-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background-color: #CBB27A;
+            color: #0B0B0D;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .package-icon {
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 1.5rem;
+            color: #CBB27A;
+        }
+
+        .package-name {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .package-price {
+            font-size: 1.5rem;
+            color: #CBB27A;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .package-description {
+            color: rgba(244, 245, 247, 0.7);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .package-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .package-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(203, 178, 122, 0.1);
+            color: rgba(244, 245, 247, 0.8);
+            font-weight: 300;
+        }
+
+        .package-features li:before {
+            content: "✓ ";
+            color: #CBB27A;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .package-cta {
+            display: block;
+            text-align: center;
+            padding: 1rem;
+            background-color: transparent;
+            border: 1px solid #CBB27A;
+            color: #CBB27A;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .package-cta:hover {
+            background-color: #CBB27A;
+            color: #0B0B0D;
+        }
+
+        .package-card.featured .package-cta {
+            background-color: #CBB27A;
+            color: #0B0B0D;
+        }
+
+        /* Components Section */
+        .components {
+            padding: 5rem 1.5rem;
+        }
+
+        .components-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .components h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .component-item {
+            padding: 1.5rem;
+            background-color: rgba(11, 11, 13, 0.6);
+            border: 1px solid rgba(203, 178, 122, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .component-item:hover {
+            border-color: rgba(203, 178, 122, 0.3);
+        }
+
+        .component-item h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #CBB27A;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 8rem 1.5rem;
+            text-align: center;
+            background-color: rgba(15, 26, 46, 0.3);
+        }
+
+        .cta h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            color: rgba(244, 245, 247, 0.6);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            background-color: #CBB27A;
+            color: #0B0B0D;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(203, 178, 122, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(203, 178, 122, 0.1);
+            padding: 3rem 1.5rem;
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-logo img {
+            height: 2rem;
+            opacity: 0.7;
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: rgba(244, 245, 247, 0.4);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.875rem;
+            color: rgba(244, 245, 247, 0.4);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background-color: rgba(11, 11, 13, 0.98);
+                padding: 1.5rem;
+                border-top: 1px solid rgba(203, 178, 122, 0.1);
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .package-card.featured {
+                transform: scale(1);
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="images/logo.jpg" alt="Houtvie Hub">
+            </div>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="packages.html">Packages</a></li>
+                <li><a href="contact.html" class="btn-contact">Contact</a></li>
+            </ul>
+
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <span class="hero-badge">Houtvie Elevate Suite</span>
+        <h1>Transform Your<br>Digital Presence</h1>
+        <p>Sophisticated design, intelligent automation, and proven results. Choose the package that matches your ambition.</p>
+    </section>
+
+    <!-- Packages -->
+    <section class="packages">
+        <div class="packages-container">
+            <div class="packages-grid">
+                <!-- Elevate Lite -->
+                <div class="package-card">
+                    <div class="package-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="package-name">Elevate Lite</h2>
+                    <div class="package-price">₦180k - ₦250k</div>
+                    <p class="package-description">Premium foundation for agencies ready to make an impression.</p>
+                    <ul class="package-features">
+                        <li>1-2 Page Structure</li>
+                        <li>Mobile-Responsive Design</li>
+                        <li>Basic Lead Form</li>
+                        <li>SEO Foundation</li>
+                        <li>7-Day Support</li>
+                    </ul>
+                    <a href="contact.html" class="package-cta">Get Started</a>
+                </div>
+
+                <!-- Elevate Standard (Featured) -->
+                <div class="package-card featured">
+                    <span class="package-badge">MOST POPULAR</span>
+                    <div class="package-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="package-name">Elevate Standard</h2>
+                    <div class="package-price">₦350k - ₦550k</div>
+                    <p class="package-description">Complete digital transformation with automation and intelligence.</p>
+                    <ul class="package-features">
+                        <li>Full 5-Page Website</li>
+                        <li>Premium Design System</li>
+                        <li>Automated Lead Capture</li>
+                        <li>CRM Integration</li>
+                        <li>AI-Enhanced Copywriting</li>
+                        <li>Performance Optimization</li>
+                        <li>30-Day Support</li>
+                    </ul>
+                    <a href="contact.html" class="package-cta">Get Started</a>
+                </div>
+
+                <!-- Elevate Prestige -->
+                <div class="package-card">
+                    <div class="package-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                    </div>
+                    <h2 class="package-name">Elevate Prestige</h2>
+                    <div class="package-price">₦650k - ₦1.2M</div>
+                    <p class="package-description">Everything you need to dominate your market with sophistication.</p>
+                    <ul class="package-features">
+                        <li>Everything in Standard</li>
+                        <li>AI Chatbot Integration</li>
+                        <li>Advanced CRM Automation</li>
+                        <li>Custom Visual Assets</li>
+                        <li>Booking System Setup</li>
+                        <li>Analytics Dashboard</li>
+                        <li>60-Day Priority Support</li>
+                    </ul>
+                    <a href="contact.html" class="package-cta">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Components -->
+    <section class="components">
+        <div class="components-container">
+            <h2>What's Included in Every Package</h2>
+            <div class="components-grid">
+                <div class="component-item">
+                    <h3>Brand Discovery</h3>
+                </div>
+                <div class="component-item">
+                    <h3>Mobile-First Design</h3>
+                </div>
+                <div class="component-item">
+                    <h3>Performance Optimization</h3>
+                </div>
+                <div class="component-item">
+                    <h3>SEO Foundation</h3>
+                </div>
+                <div class="component-item">
+                    <h3>Lead Capture Forms</h3>
+                </div>
+                <div class="component-item">
+                    <h3>Content Support</h3>
+                </div>
+                <div class="component-item">
+                    <h3>Post-Launch Support</h3>
+                </div>
+                <div class="component-item">
+                    <h3>Analytics Setup</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Need Something Custom?</h2>
+        <p>For enterprise needs or unique requirements, we design bespoke solutions that match your vision.</p>
+        <a href="contact.html" class="btn">Book a Discovery Call</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/logo.jpg" alt="Houtvie Hub">
+            </div>
+            <p class="footer-text">&copy; 2024 Houtvie Hub. Quiet power. Unavoidable presence.</p>
+            <div class="footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+    </script>
+</body>
+</html>
